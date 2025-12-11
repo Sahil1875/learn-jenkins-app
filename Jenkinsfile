@@ -56,8 +56,7 @@ pipeline {
 
     post {
         always{
-             junit 'test-results/junit.xml'
-             junit 'test-results/playwright/*.xml'
+             junit 'jest-results/junit.xml'
         }
         success {
             echo "Build completed successfully! 🚀"
