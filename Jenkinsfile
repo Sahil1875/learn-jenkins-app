@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'node:18-alpine'
-            args '-u root'    // prevents permission issues inside container
+            image 'mcr.microsoft.com/playwright:v1.48.0-jammy' 
+            args '-u root'
             reuseNode true
         }
     }
@@ -16,7 +16,7 @@ pipeline {
             }
         }
         
-        stage('Test'){
+        stage('Unit Tests') {
             steps{
                 sh '''
                 npm test
@@ -28,14 +28,35 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'npm run build'
-                sh 'ls -la'
+                sh 'ls -la build'
+            }
+        }
+
+        stage('Playwright E2E Tests') {
+            steps {
+                sh '''
+                  # Install serve to host built React app
+                  npm install -g serve
+
+                  # Start the UI in background on port 3000
+                  serve -s build -l 3000 &
+
+                  # Wait 5 seconds for server to start
+                  sleep 5
+
+                  # Install Playwright browsers if needed
+                  npx playwright install
+
+                  # Run Playwright test suite
+                  npx playwright test
+                '''
             }
         }
     }
 
     post {
         always{
-            junit 'test-results/junit.xml'
+            junit 'test-results/**/*.xml'
         }
         success {
             echo "Build completed successfully! 🚀"
