@@ -17,6 +17,7 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
+                sh 'ls -la'
                 sh 'npm ci'
             }
         }
@@ -24,6 +25,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'npm run build'
+                sh 'ls -la'
             }
         }
 
