@@ -19,6 +19,7 @@ pipeline {
         stage('Unit Tests') {
             steps{
                 sh '''
+                mkdir -p test-results/jest
                 npm test
                 test -f build/index.html
                 '''
