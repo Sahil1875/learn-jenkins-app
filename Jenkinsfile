@@ -15,14 +15,22 @@ pipeline {
                 sh 'npm ci'
             }
         }
-
+        
+        stage('Test'){
+            steps{
+                sh '''
+                npm test
+                test -f build/index.html
+                '''
+            }
+        }
+        
         stage('Build') {
             steps {
                 sh 'npm run build'
                 sh 'ls -la'
             }
         }
-
     }
 
     post {
