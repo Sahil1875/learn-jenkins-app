@@ -1,24 +1,40 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18-alpine'
+            args '-u root'    // prevents permission issues inside container
+            reuseNode true
+        }
+    }
 
     stages {
-        stage('Build') {
-            agent{
-                  docker{
-                         image 'node:18-alpine'
-                         reuseNode true
-                  }
-            }
+
+        stage('Checkout') {
             steps {
-                sh '''
-                   ls -la
-                   node --version
-                   npm --version
-                   npm ci 
-                   npm run build
-                   ls -la
-                '''
+                checkout scm
             }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo "Build completed successfully! 🚀"
+        }
+        failure {
+            echo "Build failed ❌"
         }
     }
 }
