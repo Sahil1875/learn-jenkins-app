@@ -7,6 +7,10 @@ pipeline {
         }
     }
 
+    environmnent {
+        NETIFLY_SITE_ID = '70fbb273-a271-4e8e-8d43-4cd19534139f'
+    }
+    
     stages {
 
         stage('Install dependencies') {
@@ -57,6 +61,7 @@ pipeline {
                 sh '''
                 npm install netlify-cli -g
                 netlify --version
+                echo " Deploying to production site ID: $NETIFLY_SITE_ID"
                 '''
             }
         }
