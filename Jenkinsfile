@@ -9,6 +9,7 @@ pipeline {
 
     environment {
         NETIFLY_SITE_ID = '70fbb273-a271-4e8e-8d43-4cd19534139f'
+        NETIFLY_AUTH_TOKEN = credentials('netifly-token')
     }
     
     stages {
