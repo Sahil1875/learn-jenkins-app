@@ -44,11 +44,17 @@ pipeline {
                   # Wait 5 seconds for server to start
                   sleep 5
 
-                  # Install Playwright browsers if needed
-                  npx playwright install
-
                   # Run Playwright test suite
                   npx playwright test
+                '''
+            }
+        }
+
+        stage('Deploy'){
+            steps{
+                sh '''
+                npm install netlify-cli -g
+                netlify --version
                 '''
             }
         }
