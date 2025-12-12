@@ -1,8 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'mcr.microsoft.com/playwright:v1.48.0-jammy' 
-            args '-u root'
+            image 'mcr.microsoft.com/playwright:v1.48.0-jammy'
             reuseNode true
         }
     }
@@ -39,7 +38,7 @@ pipeline {
                   npm install -g serve
 
                   # Start the UI in background on port 3000
-                  serve -s build -l 3000 &
+                  node_modules/.bin/serve -s build -l 3000 &
 
                   # Wait 5 seconds for server to start
                   sleep 5
@@ -55,8 +54,8 @@ pipeline {
         stage('Deploy'){
             steps{
                 sh '''
-                npm install netlify-cli -g
-                netlify --version
+                npm install netlify-cli
+                node_modules/.bin/netlify --version
                 '''
             }
         }
