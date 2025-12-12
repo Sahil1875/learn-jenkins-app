@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'mcr.microsoft.com/playwright:v1.39.0-jammy ' 
+            image 'mcr.microsoft.com/playwright:v1.48.0-jammy' 
             args '-u root'
             reuseNode true
         }
@@ -43,6 +43,8 @@ pipeline {
 
                   # Wait 5 seconds for server to start
                   sleep 5
+
+                  npx playwright install
 
                   # Run Playwright test suite
                   npx playwright test
