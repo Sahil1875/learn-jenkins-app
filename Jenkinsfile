@@ -79,16 +79,16 @@ pipeline {
             }
         }
     }
-        post {
-            always {
-                junit allowEmptyResults: true, testResults: 'jest-results/junit.xml'
-            }
-            success {
-                echo "Build completed successfully 🚀"
-            }
-            failure {
-                echo "Build failed ❌"
-            }
+
+    post {
+        always {
+            junit allowEmptyResults: true, testResults: 'jest-results/junit.xml'
+        }
+        success {
+            echo "Build completed successfully 🚀"
+        }
+        failure {
+            echo "Build failed ❌"
         }
     }
 }
