@@ -81,9 +81,6 @@ pipeline {
     }
 
     post {
-        always {
-            junit 'jest-results/junit.xml'
-        }
         success {
             echo "Build completed successfully 🚀"
         }
