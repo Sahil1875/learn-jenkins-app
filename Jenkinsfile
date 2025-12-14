@@ -57,7 +57,6 @@ pipeline {
             steps {
                 sh '''
                   echo "Deploying to staging..."
-                  npx netlify status
                   npx netlify deploy --dir=build
                 '''
             }
