@@ -57,7 +57,25 @@ pipeline {
             }
         }
 
-        stage('Deploy'){
+        stage('Deploy Staging'){
+            steps{
+                sh '''
+                npm install netlify-cli -g
+                netlify --version
+                echo " Deploying to production site ID: $NETLIFY_SITE_ID"
+                netlify status
+                netlify deploy --dir=build 
+                '''
+            }
+        }
+
+        stage('Approval'){
+            steps{
+                input message: 'Ready to Deploy?', ok: 'Yes, I am sure to deploy'
+            }
+        }
+        
+        stage('Deploy Prod'){
             steps{
                 sh '''
                 npm install netlify-cli -g
