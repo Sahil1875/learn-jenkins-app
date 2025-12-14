@@ -82,7 +82,7 @@ pipeline {
 
     post {
         always {
-            junit 'jest-results/junit.xml'
+            junit allowEmptyResults: true, testResults: 'jest-results/junit.xml'
         }
         success {
             echo "Build completed successfully 🚀"
