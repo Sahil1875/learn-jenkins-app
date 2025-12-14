@@ -1,11 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'mcr.microsoft.com/playwright:v1.48.0-jammy'
-            args '-u root'
-            reuseNode true
-        }
-    }
+    agent any
 
     environment {
         NETLIFY_SITE_ID = '70fbb273-a271-4e8e-8d43-4cd19534139f'
@@ -15,6 +9,12 @@ pipeline {
     stages {
 
         stage('Install dependencies') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.48.0-jammy'
+                    args '-u root'
+                }
+            }
             steps {
                 sh '''
                   npm ci
@@ -24,15 +24,26 @@ pipeline {
         }
 
         stage('Unit Tests') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.48.0-jammy'
+                    args '-u root'
+                }
+            }
             steps {
                 sh '''
                   npm test
-                  test -f build/index.html
                 '''
             }
         }
 
         stage('Build') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.48.0-jammy'
+                    args '-u root'
+                }
+            }
             steps {
                 sh '''
                   npm run build
@@ -42,12 +53,17 @@ pipeline {
         }
 
         stage('Playwright E2E Tests') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.48.0-jammy'
+                    args '-u root'
+                }
+            }
             steps {
                 sh '''
                   npm install -g serve
                   serve -s build -l 3000 &
                   sleep 5
-
                   npx playwright install
                   npx playwright test
                 '''
@@ -57,8 +73,6 @@ pipeline {
         stage('Deploy Staging') {
             steps {
                 sh '''
-                  echo "Deploying to staging..."
-                  npx netlify status
                   npx netlify deploy --dir=build
                 '''
             }
@@ -73,7 +87,6 @@ pipeline {
         stage('Deploy Prod') {
             steps {
                 sh '''
-                  echo "Deploying to production..."
                   npx netlify deploy --dir=build --prod
                 '''
             }
