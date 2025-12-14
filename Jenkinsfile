@@ -57,7 +57,6 @@ pipeline {
             steps {
                 sh '''
                   echo "Deploying to staging..."
-                  export NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN
                   npx netlify status
                   npx netlify deploy --dir=build
                 '''
